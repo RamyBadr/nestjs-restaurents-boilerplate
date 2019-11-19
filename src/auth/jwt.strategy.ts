@@ -14,12 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    console.log(payload, ' jwt.startegy vailadte payload  input');
-
-    console.log(
-      ExtractJwt.fromAuthHeaderAsBearerToken(),
-      'ExtractJwt.fromAuthHeaderAsBearerToken()'
-    );
+    // console.log(payload, ' jwt.startegy vailadte payload  input');
 
     return { _id: payload.sub, username: payload.username, role: payload.role };
   }

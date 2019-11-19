@@ -4,9 +4,15 @@ import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { CitiesModule } from './cities/cities.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
-  imports: [CatsModule,AuthModule, UsersModule,CitiesModule],
-  controllers:[AppController]
+  imports: [DatabaseModule, CatsModule, AuthModule, UsersModule, CitiesModule],
+
+  controllers: [AppController],
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    console.log('init appa module');
+  }
+}

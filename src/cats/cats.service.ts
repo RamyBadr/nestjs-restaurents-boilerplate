@@ -5,26 +5,11 @@ import { CreateCatDto } from './dto/create-cat.dto';
 import { Model } from 'mongoose';
 import { ICat as Cat } from './interfaces/cat.interface';
 
-
-// @Injectable()
-// export class CatsService {
-//   private readonly cats: ICat[] = [];
-
-//   create(cat: ICat) {
-//     this.cats.push(cat);
-//   }
-
-//   findAll(): ICat[] {
-//     return this.cats;
-//   }
-// }
 @Injectable()
 export class CatsService {
   constructor(@Inject('CAT_MODEL') private readonly catModel: Model<Cat>) {}
 
   async create(createCatDto: CreateCatDto): Promise<Cat> {
-    
-    
     const createdCat = new this.catModel(createCatDto);
     return await createdCat.save();
   }
@@ -32,7 +17,7 @@ export class CatsService {
   async findAll(): Promise<Cat[]> {
     return await this.catModel.find().exec();
   }
-  async findById(id:String): Promise<Cat> {
+  async findById(id: String): Promise<Cat> {
     return await this.catModel.findById(id).exec();
   }
 }

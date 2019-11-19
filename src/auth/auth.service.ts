@@ -12,11 +12,7 @@ export class AuthService {
   ) {}
 
   async validateUser(loginUserDto: LoginUserDto): Promise<any> {
-    console.log(loginUserDto, 'autjservice loginUserDto in validateUser');
-
     const user = await this.usersService.findOne(loginUserDto.username);
-
-    console.log(user, 'user findOne result');
 
     if (user) {
       // use bcrypt.compare
@@ -37,12 +33,8 @@ export class AuthService {
 
   async login(loginUserDto: LoginUserDto) {
     let user = await this.validateUser(loginUserDto);
-    console.log(user, 'validateUser service result in login');
-
     if (!user) return;
-
     const payload = { username: user.username, sub: user._id, role: user.role };
-    console.log(payload, 'login payload');
     return {
       access_token: this.jwtService.sign(payload),
     };
