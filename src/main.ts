@@ -15,7 +15,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
-  await Initializer.initAdmin();
+  await Initializer.initAdminUser();
   await app.listen(3001);
   console.log('app atarted at port : 3001');
 }

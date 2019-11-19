@@ -3,6 +3,7 @@ import { IUser } from './interfaces/user.interface';
 import { Model } from 'mongoose';
 import * as mongoose from 'mongoose';
 import { ConfigService } from '../config/config.service';
+import * as bcrypt from 'bcrypt';
 // import { User } from './classes/user.class';
 import { UserSchema } from './schemas/user.schema';
 
@@ -24,7 +25,13 @@ export class UsersService {
       console.log('admin user found');
       return;
     }
-    const createdAdmin = new UserModel(defaultUser);
+    let encryptedUser:IUser = {
+      username:defaultUser.username,
+      role:defaultUser.role,
+      password:await bcrypt.hash(defaultUser.password,10)
+    }
+    
+    const createdAdmin = new UserModel(encryptedUser);
     await createdAdmin.save();
     console.log('admin user created');
     return;

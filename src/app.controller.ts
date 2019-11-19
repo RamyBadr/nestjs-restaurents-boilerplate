@@ -4,27 +4,29 @@ import {
   Request,
   Body,
   Post,
-  UseGuards
+  UseGuards,
+  UseInterceptors,
+  UsePipes
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth/auth.service';
 import { ApiOperation, ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
 import { LoginUserDto } from './users/dto/login-user.dto';
+import { Strategies } from './common/decorators/strategies.decorator';
 
-@ApiUseTags('login')
+
+@ApiUseTags('auth')
 @Controller()
 export class AppController {
   constructor(
     private readonly authService: AuthService
-  ) // private readonly appService: AppService
-  {}
-  @UseGuards(AuthGuard('local'))
+  ){}
+
+  
   @ApiOperation({ title: 'login user' })
   @Post('auth/login')
-  async login(
-    // @Request() req
-    @Body() loginUserDto: LoginUserDto
-  ) {
+  // @UseGuards(AuthGuard('local'))
+  async login(@Body() loginUserDto: LoginUserDto) {
     return await this.authService.login(loginUserDto);
   }
 

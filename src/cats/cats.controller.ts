@@ -11,7 +11,6 @@ import { Roles } from '../common/decorators/roles.decorator';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { LoggingInterceptor } from '../common/interceptors/logging.interceptor';
 import { TransformInterceptor } from '../common/interceptors/transform.interceptor';
-import { ParseIntPipe } from '../common/pipes/parse-int.pipe';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { ICat } from './interfaces/cat.interface';
@@ -24,16 +23,16 @@ import {
   ApiUseTags,
 } from '@nestjs/swagger';
 
-@ApiBearerAuth()
+
 @UseGuards(RolesGuard)
-@UseGuards(AuthGuard('jwt'))
+
 @ApiUseTags('cats')
 @Controller('cats')
-//
-@UseInterceptors(LoggingInterceptor, TransformInterceptor)
+// @UseInterceptors(LoggingInterceptor, TransformInterceptor)
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
-
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   @Roles('admin')
   @ApiOperation({ title: 'Create cat' })
