@@ -9,10 +9,8 @@ import { DatabaseModule } from './database/database.module';
 @Module({
   imports: [DatabaseModule, CatsModule, AuthModule, UsersModule, CitiesModule],
 
-  controllers: [AppController],
+  controllers: [AppController]
 })
 export class AppModule {
-  constructor() {
-    console.log('init appa module');
-  }
+  constructor() {}
 }

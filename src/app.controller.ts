@@ -4,7 +4,7 @@ import {
   Request,
   Body,
   Post,
-  UseGuards,
+  UseGuards
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth/auth.service';
@@ -14,8 +14,10 @@ import { LoginUserDto } from './users/dto/login-user.dto';
 @ApiUseTags('login')
 @Controller()
 export class AppController {
-  constructor(private readonly authService: AuthService) {}
-
+  constructor(
+    private readonly authService: AuthService
+  ) // private readonly appService: AppService
+  {}
   @UseGuards(AuthGuard('local'))
   @ApiOperation({ title: 'login user' })
   @Post('auth/login')
@@ -33,4 +35,8 @@ export class AppController {
   getProfile(@Request() req) {
     return req.user;
   }
+  // @Get()
+  // getHello(): string {
+  //   return this.appService.getHello();
+  // }
 }
