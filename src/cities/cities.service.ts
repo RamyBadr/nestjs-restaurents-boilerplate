@@ -1,32 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UseFilters, Catch, HttpException, ConflictException, BadRequestException } from '@nestjs/common';
 import { Inject } from '@nestjs/common';
 import { ICity } from './interfaces/city.interface';
 import { CreateCityDto } from './dto/create-city.dto';
 import { Model } from 'mongoose';
 import { ICity as City } from './interfaces/city.interface';
-
-
-// @Injectable()
-// export class CitiesService {
-//   private readonly cities: ICity[] = [];
-
-//   create(city: ICity) {
-//     this.cities.push(city);
-//   }
-
-//   findAll(): ICity[] {
-//     return this.cities;
-//   }
-// }
+import { MongoException } from '../common/exceptions/mongodb.exception';
+import { QueryFailedFilter } from 'src/common/filters/query-failed.filter';
 @Injectable()
 export class CitiesService {
   constructor(@Inject('CAT_MODEL') private readonly cityModel: Model<City>) {}
+  
 
+  @UseFilters(QueryFailedFilter)
   async create(createCityDto: CreateCityDto): Promise<City> {
-    
-    
     const createdCity = new this.cityModel(createCityDto);
-    return await createdCity.save();
+    try {
+      return await createdCity.save();
+    } catch (error) {
+      throw new MongoException();
+    }
+    
   }
 
   async findAll(): Promise<City[]> {

@@ -24,7 +24,7 @@ export class AuthService {
           role: userCloned.role,
         };
         if(!validateUserResult){
-          throw new BadRequestException("invalid password");
+          throw new UserNotFoundException("invalid password!!");
           
         }
         return validateUserResult;
@@ -36,7 +36,7 @@ export class AuthService {
 
   async login(loginUserDto: LoginUserDto) {
     let user = await this.validateUser(loginUserDto);
-    if (!user) throw new UserNotFoundException();
+    if (!user) throw new UserNotFoundException("user|pass not correct");
     const payload = { username: user.username, sub: user._id, role: user.role };
     return {
       access_token: this.jwtService.sign(payload),
@@ -46,6 +46,6 @@ export class AuthService {
 
 export class UserNotFoundException extends NotFoundException {
   constructor(error?: string) {
-      super('error.user_not_found', error);
+      super('error', error);
   }
 }

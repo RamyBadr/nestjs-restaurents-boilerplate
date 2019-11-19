@@ -4,9 +4,10 @@ import {
   ExceptionFilter,
   HttpException,
 } from '@nestjs/common';
+import { MongoException } from '../exceptions/mongodb.exception';
 
-@Catch(HttpException)
-export class HttpExceptionFilter implements ExceptionFilter<HttpException> {
+@Catch(MongoException)
+export class HttpExceptionFilter implements ExceptionFilter<MongoException> {
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();

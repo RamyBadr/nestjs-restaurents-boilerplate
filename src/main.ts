@@ -1,11 +1,27 @@
-import { ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import { ValidationPipe, ClassSerializerInterceptor } from '@nestjs/common';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Initializer } from './common/initializers/initializer';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
+import { QueryFailedFilter } from './common/filters/query-failed.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe());
+  const reflector = app.get(Reflector);
+    app.useGlobalFilters(
+        new QueryFailedFilter(reflector),
+    );
+    app.useGlobalPipes(
+        new ValidationPipe({
+            whitelist: true,
+            transform: true,
+            dismissDefaultMessages: true,
+            validationError: {
+                target: false,
+            },
+        }),
+    );
+  // app.useGlobalPipes(new ValidationPipe());
   const options = new DocumentBuilder()
     .setTitle('Restaurent example')
     .setDescription('The restaurent API description')

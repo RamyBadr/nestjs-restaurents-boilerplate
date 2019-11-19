@@ -22,6 +22,7 @@ import {
   ApiResponse,
   ApiUseTags,
 } from '@nestjs/swagger';
+import { RoleType } from 'src/common/constants/role-type';
 
 
 @UseGuards(RolesGuard)
@@ -34,7 +35,7 @@ export class CatsController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  @Roles('admin')
+  @Roles(RoleType.ADMIN)
   @ApiOperation({ title: 'Create cat' })
   @ApiResponse({
     status: 201,
