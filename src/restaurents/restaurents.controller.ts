@@ -13,10 +13,10 @@ import { RolesGuard } from '../common/guards/roles.guard';
 import { LoggingInterceptor } from '../common/interceptors/logging.interceptor';
 import { TransformInterceptor } from '../common/interceptors/transform.interceptor';
 
-import { CitiesService } from './cities.service';
-import { CreateCityDto } from './dto/create-city.dto';
-import { ICity } from './interfaces/city.interface';
-import { City } from './classes/city.class';
+import { restaurentsService } from './restaurents.service';
+import { CreateRestaurentDto } from './dto/create-restaurent.dto';
+import { IRestaurent } from './interfaces/restaurent.interface';
+import { Restaurent } from './classes/restaurent.class';
 import {RoleType} from '../common/constants/role-type'
 
 
@@ -29,35 +29,34 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { QueryFailedFilter } from 'src/common/filters/query-failed.filter';
 
-
-
-@ApiUseTags('cities')
-@Controller('cities')
+@ApiBearerAuth()
+@UseGuards(AuthGuard('jwt'))
+@ApiUseTags('restaurents')
+@Controller('restaurents')
 @UseGuards(RolesGuard)
 @UseInterceptors(LoggingInterceptor, TransformInterceptor)
-export class CitiesController {
-  constructor(private readonly citiesService: CitiesService) {}
+export class restaurentsController {
+  constructor(private readonly restaurentsService: restaurentsService) {}
 
   // @UseFilters(QueryFailedFilter)
-  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @Roles(RoleType.ADMIN)
-  @ApiOperation({ title: 'Create city' })
+  @ApiOperation({ title: 'Create restaurent' })
   @ApiResponse({
     status: 201,
     description: 'The record has been successfully created.',
-    type: City
+    type: Restaurent
   })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
-  async create(@Body() createCityDto: CreateCityDto) {
-    this.citiesService.create(createCityDto);
+  async create(@Body() createRestaurentDto: CreateRestaurentDto) {
+    this.restaurentsService.create(createRestaurentDto);
   }
 
-  // @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'))
   @Get()
-  // @Roles(RoleType.ADMIN)
-  async findAll(): Promise<ICity[]> {
-    return this.citiesService.findAll();
+  @Roles(RoleType.ADMIN)
+  async findAll(): Promise<IRestaurent[]> {
+    return this.restaurentsService.findAll();
   }
 }

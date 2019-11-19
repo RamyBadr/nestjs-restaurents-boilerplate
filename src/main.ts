@@ -8,9 +8,9 @@ import { QueryFailedFilter } from './common/filters/query-failed.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const reflector = app.get(Reflector);
-    app.useGlobalFilters(
-        new QueryFailedFilter(reflector),
-    );
+    // app.useGlobalFilters(
+    //     new QueryFailedFilter(reflector),
+    // );
     app.useGlobalPipes(
         new ValidationPipe({
             whitelist: true,

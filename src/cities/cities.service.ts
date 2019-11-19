@@ -8,7 +8,7 @@ import { MongoException } from '../common/exceptions/mongodb.exception';
 import { QueryFailedFilter } from 'src/common/filters/query-failed.filter';
 @Injectable()
 export class CitiesService {
-  constructor(@Inject('CAT_MODEL') private readonly cityModel: Model<City>) {}
+  constructor(@Inject('CITY_MODEL') private readonly cityModel: Model<City>) {}
   
 
   @UseFilters(QueryFailedFilter)

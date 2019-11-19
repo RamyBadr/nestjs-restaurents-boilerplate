@@ -11,7 +11,7 @@ export class AuthService {
   ) {}
 
   async validateUser(loginUserDto: LoginUserDto): Promise<any> {
-    const user = await this.usersService.findOne(loginUserDto.username);
+    const user = await this.usersService.findOne(loginUserDto.email);
     if (user) {
       // use bcrypt.compare      
       const validPassword = await bcrypt.compare(loginUserDto.password,user.password);      
@@ -19,7 +19,7 @@ export class AuthService {
         let userCloned = JSON.parse(JSON.stringify(user));
 
         let validateUserResult = {
-          username: userCloned.username,
+          email: userCloned.email,
           _id: userCloned._id,
           role: userCloned.role,
         };
@@ -37,7 +37,7 @@ export class AuthService {
   async login(loginUserDto: LoginUserDto) {
     let user = await this.validateUser(loginUserDto);
     if (!user) throw new UserNotFoundException("user|pass not correct");
-    const payload = { username: user.username, sub: user._id, role: user.role };
+    const payload = { email: user.email, sub: user._id, role: user.role };
     return {
       access_token: this.jwtService.sign(payload),
     };

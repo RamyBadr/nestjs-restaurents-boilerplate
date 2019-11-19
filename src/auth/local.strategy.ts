@@ -8,10 +8,10 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly authService: AuthService) {
     super();
   }
-  //username: string, password: string
-  async validate(username: string, password: string): Promise<any> {
+  //email: string, password: string
+  async validate(email: string, password: string): Promise<any> {
     const user = await this.authService.validateUser({
-      username: username,
+      email: email,
       password: password,
     });
     // console.log(user, 'user in local startegy');

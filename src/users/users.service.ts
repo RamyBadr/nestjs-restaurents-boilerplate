@@ -26,7 +26,7 @@ export class UsersService {
       return;
     }
     let encryptedUser:IUser = {
-      username:defaultUser.username,
+      email:defaultUser.email,
       role:defaultUser.role,
       password:await bcrypt.hash(defaultUser.password,10)
     }
@@ -36,8 +36,8 @@ export class UsersService {
     console.log('admin user created');
     return;
   }
-  async findOne(username: string): Promise<User | undefined> {
-    let user = await this.userModel.findOne({ username: username }).exec();
+  async findOne(email: string): Promise<User | undefined> {
+    let user = await this.userModel.findOne({ email: email }).exec();
     return <IUser>user;
   }
 }
