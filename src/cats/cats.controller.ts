@@ -16,7 +16,7 @@ import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { ICat } from './interfaces/cat.interface';
 import { Cat } from './classes/cat.class';
-
+import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -25,11 +25,12 @@ import {
 } from '@nestjs/swagger';
 
 @ApiBearerAuth()
+@UseGuards(RolesGuard)
+@UseGuards(AuthGuard('jwt'))
 @ApiUseTags('cats')
 @Controller('cats')
-@UseGuards(RolesGuard)
+//
 @UseInterceptors(LoggingInterceptor, TransformInterceptor)
-
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
@@ -51,6 +52,3 @@ export class CatsController {
     return this.catsService.findAll();
   }
 }
-
-
-
