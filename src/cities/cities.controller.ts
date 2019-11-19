@@ -5,7 +5,7 @@ import {
   Param,
   Post,
   UseGuards,
-  UseInterceptors,
+  UseInterceptors
 } from '@nestjs/common';
 import { Roles } from '../common/decorators/roles.decorator';
 import { RolesGuard } from '../common/guards/roles.guard';
@@ -15,13 +15,13 @@ import { ParseIntPipe } from '../common/pipes/parse-int.pipe';
 import { CitiesService } from './cities.service';
 import { CreateCityDto } from './dto/create-city.dto';
 import { ICity } from './interfaces/city.interface';
-import {  City } from './classes/city.class';
+import { City } from './classes/city.class';
 
 import {
   ApiBearerAuth,
   ApiOperation,
   ApiResponse,
-  ApiUseTags,
+  ApiUseTags
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -31,17 +31,17 @@ import { AuthGuard } from '@nestjs/passport';
 @Controller('cities')
 @UseGuards(RolesGuard)
 @UseInterceptors(LoggingInterceptor, TransformInterceptor)
-
 export class CitiesController {
   constructor(private readonly citiesService: CitiesService) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   @Roles('admin')
   @ApiOperation({ title: 'Create city' })
   @ApiResponse({
     status: 201,
     description: 'The record has been successfully created.',
-    type: City,
+    type: City
   })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   async create(@Body() createCityDto: CreateCityDto) {
@@ -55,6 +55,3 @@ export class CitiesController {
     return this.citiesService.findAll();
   }
 }
-
-
-
