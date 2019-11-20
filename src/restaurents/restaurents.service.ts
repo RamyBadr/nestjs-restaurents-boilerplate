@@ -17,7 +17,7 @@ export class restaurentsService {
     try {
       return await createdRestaurent.save();
     } catch (error) {
-      throw new MongoException();
+      throw new MongoException(error);
     }
     
   }

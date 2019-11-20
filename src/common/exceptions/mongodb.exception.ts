@@ -1,7 +1,9 @@
-import { HttpException } from "@nestjs/common";
+import { HttpException,BadRequestException } from "@nestjs/common";
 
-export class MongoException extends HttpException{
-  constructor(){
-    super("MongoError",1001)
+export class MongoException extends BadRequestException{
+  public error:any;
+  constructor(error:any){
+    super("MongoError")
+    this.error=error;
   }
 }

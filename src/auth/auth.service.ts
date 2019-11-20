@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, UnauthorizedException,  } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { LoginUserDto } from 'src/users/dto/login-user.dto';
@@ -36,7 +36,7 @@ export class AuthService {
 
   async login(loginUserDto: LoginUserDto) {
     let user = await this.validateUser(loginUserDto);
-    if (!user) throw new UserNotFoundException("user|pass not correct");
+    if (!user) throw new UserNotFoundException("invalid password");
     const payload = { email: user.email, sub: user._id, role: user.role };
     return {
       access_token: this.jwtService.sign(payload),
@@ -44,7 +44,7 @@ export class AuthService {
   }
 }
 
-export class UserNotFoundException extends NotFoundException {
+export class UserNotFoundException extends UnauthorizedException {
   constructor(error?: string) {
       super('error', error);
   }

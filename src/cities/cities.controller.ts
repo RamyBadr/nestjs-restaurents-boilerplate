@@ -40,6 +40,7 @@ export class CitiesController {
 
   // @UseFilters(QueryFailedFilter)
   @ApiBearerAuth()
+  @UseFilters(QueryFailedFilter)
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @Roles(RoleType.ADMIN)
@@ -51,7 +52,7 @@ export class CitiesController {
   })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   async create(@Body() createCityDto: CreateCityDto) {
-    this.citiesService.create(createCityDto);
+    return this.citiesService.create(createCityDto);
   }
 
   // @UseGuards(AuthGuard('jwt'))

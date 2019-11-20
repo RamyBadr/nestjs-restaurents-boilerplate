@@ -14,12 +14,14 @@ export class CitiesService {
   @UseFilters(QueryFailedFilter)
   async create(createCityDto: CreateCityDto): Promise<City> {
     const createdCity = new this.cityModel(createCityDto);
+    
     try {
       return await createdCity.save();
     } catch (error) {
-      throw new MongoException();
+      // console.log(error);
+      
+      throw new MongoException(error);
     }
-    
   }
 
   async findAll(): Promise<City[]> {
