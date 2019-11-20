@@ -1,14 +1,32 @@
 import * as mongoose from 'mongoose';
-const ObjectId = mongoose.Schema.ObjectId
-export const RestaurentSchema = new mongoose.Schema({
+const ObjectId = mongoose.Schema.ObjectId;
+const Schema = new mongoose.Schema({
   cityId: {
-    type:ObjectId,
-    required:true,
+    type: ObjectId,
+    required: true
   },
-  name:{
-    type:String,
-    unique:true,
-    required:true
+  name: {
+    type: String,
+    unique: true,
+    required: true
   },
-  
+  email: {
+    type: String,
+    unique: true,
+    required: true
+  },
+  location: {
+    type: {
+      type: String,
+      enum: ['Point'],
+      required: true
+    },
+    coordinates: {
+      type: [Number],
+      required: true
+    }
+  }
 });
+Schema.index({ location: 1 }, { '2dsphere': true });
+Schema.index({ location: 1 }, { required: true });
+export const RestaurentSchema = Schema;

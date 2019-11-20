@@ -27,15 +27,15 @@ import {
   ApiUseTags
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { QueryFailedFilter } from 'src/common/filters/query-failed.filter';
+import { QueryFailedFilter } from '../common/filters/query-failed.filter';
 
 @ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'))
-@ApiUseTags('restaurents')
+@ApiUseTags('restaurents api')
 @Controller('restaurents')
 @UseGuards(RolesGuard)
 @UseInterceptors(LoggingInterceptor, TransformInterceptor)
-export class restaurentsController {
+export class RestaurentsController {
   constructor(private readonly restaurentsService: restaurentsService) {}
 
   // @UseFilters(QueryFailedFilter)

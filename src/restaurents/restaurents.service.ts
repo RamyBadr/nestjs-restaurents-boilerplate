@@ -5,7 +5,7 @@ import { CreateRestaurentDto } from './dto/create-restaurent.dto';
 import { Model } from 'mongoose';
 import { IRestaurent as Restaurent } from './interfaces/restaurent.interface';
 import { MongoException } from '../common/exceptions/mongodb.exception';
-import { QueryFailedFilter } from 'src/common/filters/query-failed.filter';
+import { QueryFailedFilter } from '../common/filters/query-failed.filter';
 @Injectable()
 export class restaurentsService {
   constructor(@Inject('RESTAURENT_MODEL') private readonly restaurentModel: Model<Restaurent>) {}
@@ -19,9 +19,7 @@ export class restaurentsService {
     } catch (error) {
       throw new MongoException(error);
     }
-    
   }
-
   async findAll(): Promise<Restaurent[]> {
     return await this.restaurentModel.find().exec();
   }

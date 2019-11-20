@@ -8,25 +8,25 @@ import { QueryFailedFilter } from './common/filters/query-failed.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const reflector = app.get(Reflector);
-    // app.useGlobalFilters(
-    //     new QueryFailedFilter(reflector),
-    // );
-    app.useGlobalPipes(
-        new ValidationPipe({
-            whitelist: true,
-            transform: true,
-            dismissDefaultMessages: true,
-            validationError: {
-                target: false,
-            },
-        }),
-    );
+  // app.useGlobalFilters(
+  //     new QueryFailedFilter(reflector),
+  // );
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      dismissDefaultMessages: true,
+      validationError: {
+        target: false
+      }
+    })
+  );
   // app.useGlobalPipes(new ValidationPipe());
   const options = new DocumentBuilder()
-    .setTitle('Restaurent example')
-    .setDescription('The restaurent API description')
+    .setTitle('Restaurent Nest Boilerplate')
+    .setDescription('simple nestjs boilerplate')
     .setVersion('1.0')
-    .addTag('restarents')
+    .addTag('nestjs restaurent API boilerplate')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);

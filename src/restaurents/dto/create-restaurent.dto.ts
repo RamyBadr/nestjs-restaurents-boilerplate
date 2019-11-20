@@ -1,21 +1,17 @@
-import { IsInt, IsString, IsArray, IsMongoId, ArrayMinSize, ArrayMaxSize } from 'class-validator';
+import { IsString, IsMongoId, IsEmail } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { LocationDto } from './location.dto';
 
 export class CreateRestaurentDto {
-  @ApiModelProperty()
-  @IsMongoId()  
+  @ApiModelProperty({ example: '5dd45ec2db202c119430b397' })
+  @IsMongoId()
   readonly cityId: string;
   @ApiModelProperty()
   @IsString()
   readonly name: string;
   @ApiModelProperty()
-  @IsString()
+  @IsEmail()
   readonly email: string;
-  @ApiModelProperty({description:'[lat,lng]'})
-  @IsArray()
-  @ArrayMinSize(2)
-  @ArrayMaxSize(2)
-  @Type(() => Number)
-  readonly location: [number];
+  @ApiModelProperty()
+  readonly location: LocationDto;
 }

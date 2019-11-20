@@ -7,31 +7,31 @@ We need a simple api for restaurants with these requirements:-
   5-  Statistics endpoint to group restaurants and their count by city .
 
 Models :
-       User:
+       User: # signup
            name
            email
-           password
-         role
+           password #validate length
+           role
 
-       City
-              name
+       City # done
+            name 
  
        Restaurant 
-               city
-               image
-               name
-               email
-               location
+              city
+              image
+              name
+              email
+              location
               
 
     Recommended technology stack :
        - Typescript , Express, MongoDB , Mongoose , Swagger , Passport, JWT, Ajv 
 
      Notes:
-         -       Consider rest standards while writing your api.
-         -       Consider a clear project architecture. 
-       -     Add a dummy system admin on app startup if not exists.
-         -       Write a clear swagger documentation.
+         -       Consider rest standards while writing your api.#
+         -       Consider a clear project architecture. #
+         -       Add a dummy system admin on app startup if not exists.#
+         -       Write a clear swagger documentation.#
          -       Deploy your api on any free hosting service. 
 
     

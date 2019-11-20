@@ -1,4 +1,9 @@
+import { ILocationPoint } from './point.interface';
+
 export interface IRestaurent {
-  readonly _id: string; 
-  readonly name: string;
+  _id: string;
+  cityId: string;
+  name: string;
+  email: string;
+  location: ILocationPoint;
 }
