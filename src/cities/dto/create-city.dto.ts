@@ -5,5 +5,5 @@ export class CreateCityDto {
   @ApiModelProperty()
   @IsString()
   readonly name: string;
-
+  // readonly testKey: string;
 }

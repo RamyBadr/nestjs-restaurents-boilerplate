@@ -1,8 +1,8 @@
 import { ApiModelProperty } from '@nestjs/swagger';
 import { IRestaurent } from '../interfaces/restaurent.interface';
-import { ILocationPoint } from '../interfaces/point.interface';
-import { LocationPoint } from './location.class';
-export class Restaurent implements IRestaurent {
+import { ILocationPoint } from '../../shared/location/point.interface';
+import { LocationPoint } from '../../shared/location/location.class';
+export class Restaurent {
   @ApiModelProperty({
     example: '5dd2e923e0447405d0c999e4',
     description: 'The _id of the Restaurent'
@@ -19,11 +19,9 @@ export class Restaurent implements IRestaurent {
   })
   cityId: string;
   @ApiModelProperty({
-    description: 'The geo location of the restaurent'
-  })
-  @ApiModelProperty({
     description: 'The email of the restaurent'
   })
   email: string;
+  @ApiModelProperty({ default: { lat: 0, lng: 0 } })
   location: LocationPoint;
 }

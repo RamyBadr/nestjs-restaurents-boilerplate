@@ -11,9 +11,7 @@ const Schema = new mongoose.Schema({
     required: true
   },
   email: {
-    type: String,
-    unique: true,
-    required: true
+    type: String
   },
   location: {
     type: {

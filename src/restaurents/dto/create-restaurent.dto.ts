@@ -1,6 +1,12 @@
 import { IsString, IsMongoId, IsEmail } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
-import { LocationDto } from './location.dto';
+import { LocationDto } from '../../shared/location/location.dto';
+import {
+  IHasLocation,
+  ILocationPoint
+} from '../../shared/location/point.interface';
+import { LocationPoint } from '../../shared/location/location.class';
+import { IRestaurent } from '../interfaces/restaurent.interface';
 
 export class CreateRestaurentDto {
   @ApiModelProperty({ example: '5dd45ec2db202c119430b397' })
@@ -9,9 +15,10 @@ export class CreateRestaurentDto {
   @ApiModelProperty()
   @IsString()
   readonly name: string;
-  @ApiModelProperty()
+
+  @ApiModelProperty({ example: 'test@mail.com' })
   @IsEmail()
   readonly email: string;
   @ApiModelProperty()
-  readonly location: LocationDto;
+  public location: LocationPoint;
 }

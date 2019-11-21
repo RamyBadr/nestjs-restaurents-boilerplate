@@ -2,7 +2,7 @@ import {
   BadRequestException,
   PipeTransform,
   Injectable,
-  ArgumentMetadata,
+  ArgumentMetadata
 } from '@nestjs/common';
 
 @Injectable()

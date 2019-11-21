@@ -1,4 +1,4 @@
-import { ILocationPoint } from './point.interface';
+import { ILocationPoint } from '../../shared/location/point.interface';
 
 export interface IRestaurent {
   _id: string;

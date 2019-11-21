@@ -13,12 +13,11 @@ import { RolesGuard } from '../common/guards/roles.guard';
 import { LoggingInterceptor } from '../common/interceptors/logging.interceptor';
 import { TransformInterceptor } from '../common/interceptors/transform.interceptor';
 
-import { restaurentsService } from './restaurents.service';
+import { RestaurentsService } from './restaurents.service';
 import { CreateRestaurentDto } from './dto/create-restaurent.dto';
 import { IRestaurent } from './interfaces/restaurent.interface';
 import { Restaurent } from './classes/restaurent.class';
-import {RoleType} from '../common/constants/role-type'
-
+import { RoleType } from '../common/constants/role-type';
 
 import {
   ApiBearerAuth,
@@ -28,17 +27,18 @@ import {
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { QueryFailedFilter } from '../common/filters/query-failed.filter';
+import { LocationToMongo } from '../shared/location/location.pipes';
+import { ILocationPoint } from 'src/shared/location/point.interface';
 
-@ApiBearerAuth()
-@UseGuards(AuthGuard('jwt'))
-@ApiUseTags('restaurents api')
+@ApiUseTags('restaurents')
 @Controller('restaurents')
 @UseGuards(RolesGuard)
 @UseInterceptors(LoggingInterceptor, TransformInterceptor)
 export class RestaurentsController {
-  constructor(private readonly restaurentsService: restaurentsService) {}
+  constructor(private readonly restaurentsService: RestaurentsService) {}
 
-  // @UseFilters(QueryFailedFilter)
+  @ApiBearerAuth()
+  @UseFilters(QueryFailedFilter)
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @Roles(RoleType.ADMIN)
@@ -49,8 +49,12 @@ export class RestaurentsController {
     type: Restaurent
   })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
-  async create(@Body() createRestaurentDto: CreateRestaurentDto) {
-    this.restaurentsService.create(createRestaurentDto);
+  async create(
+    @Body(new LocationToMongo('location'))
+    createRestaurentDto: any
+  ): Promise<IRestaurent> {
+    // console.log(createRestaurentDto, 'controller createRestaurentDto');
+    return this.restaurentsService.create(createRestaurentDto);
   }
 
   @UseGuards(AuthGuard('jwt'))

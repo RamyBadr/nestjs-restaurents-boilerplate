@@ -1,4 +1,4 @@
-import { ILocationPoint } from '../interfaces/point.interface';
+import { ILocationPoint } from './point.interface';
 import { ApiModelProperty } from '@nestjs/swagger';
 
 export class LocationPoint implements ILocationPoint {
