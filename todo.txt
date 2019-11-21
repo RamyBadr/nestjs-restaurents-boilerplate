@@ -4,7 +4,7 @@ We need a simple api for restaurants with these requirements:-
   2-  System admin can add , update and delete restaurants.
   3-  Find nearest restaurants from a given location (point).#done
   4-  Typeahead search on restaurants names.#done
-  5-  Statistics endpoint to group restaurants and their count by city .
+  5-  Statistics endpoint to group restaurants and their count by city .#done
 
 Models :
        User: # signup
