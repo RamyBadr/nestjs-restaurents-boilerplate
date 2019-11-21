@@ -33,13 +33,15 @@ export class LocationToMongoPipe implements PipeTransform<IHasLocation> {
 
     let transformed = JSON.parse(JSON.stringify(value));
     // delete transformed[this.key];
-    return {
+    let result = {
       ...value,
       [this.key]: {
         type: 'Point',
         coordinates: [value.location.lng, value.location.lat]
       }
     };
+    console.log(result);
+    return result;
   }
 }
 type TMongoPoint = {

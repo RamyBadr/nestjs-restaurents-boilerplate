@@ -7,7 +7,8 @@ import {
   UseGuards,
   UseInterceptors,
   UseFilters,
-  Query
+  Query,
+  Put
 } from '@nestjs/common';
 import { Roles } from '../common/decorators/roles.decorator';
 import { RolesGuard } from '../common/guards/roles.guard';
@@ -31,6 +32,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { QueryFailedFilter } from '../common/filters/query-failed.filter';
 import { LocationToMongoPipe } from '../shared/location/location.providers';
 import { ILocationPoint } from '../shared/location/point.interface';
+import { UpdateRestaurentDto } from './dto/update-restaurent.dto';
 
 @ApiUseTags('restaurents')
 @Controller('restaurents')
@@ -48,20 +50,53 @@ export class RestaurentsController {
   @ApiOperation({
     title: 'Create restaurent',
     description:
-      'Please test this method on postman,\n I had to declate createRestaurentDto as any'
+      'Please test this method on postman,\n I had to declate createRestaurentDto in controller as <any>'
   })
   @ApiResponse({
     status: 201,
     description: 'The record has been successfully created.',
     type: Restaurent
   })
+  @ApiResponse({ status: 401, description: 'Not Authenticated.' })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiResponse({
+    status: 409,
+    description: 'Conflict (Unique field duplicate).'
+  })
   async create(
     @Body(new LocationToMongoPipe('location'))
-    createRestaurentDto: CreateRestaurentDto
+    createRestaurentDto: any
   ): Promise<IRestaurent> {
-    console.log(createRestaurentDto, 'controller createRestaurentDto');
     return this.restaurentsService.create(createRestaurentDto);
+  }
+
+  @ApiBearerAuth()
+  @UseFilters(QueryFailedFilter)
+  @UseGuards(RolesGuard)
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/:_id')
+  @Roles(RoleType.ADMIN)
+  @ApiOperation({
+    title: 'Update restaurent',
+    description: ''
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'The record has been successfully created.',
+    type: Restaurent
+  })
+  @ApiResponse({ status: 401, description: 'Not Authenticated.' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiResponse({
+    status: 409,
+    description: 'Conflict (Unique field duplicate).'
+  })
+  async update(
+    @Param('_id') _id: string,
+    @Body(new LocationToMongoPipe('location'))
+    createRestaurentDto: UpdateRestaurentDto
+  ): Promise<IRestaurent> {
+    return this.restaurentsService.update(_id, createRestaurentDto);
   }
 
   // @UseGuards(AuthGuard('jwt'))
