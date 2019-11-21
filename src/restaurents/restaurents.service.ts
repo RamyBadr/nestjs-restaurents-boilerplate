@@ -14,7 +14,7 @@ import { Model } from 'mongoose';
 
 import { MongoException } from '../common/exceptions/mongodb.exception';
 import { QueryFailedFilter } from '../common/filters/query-failed.filter';
-import { Restaurent } from './classes/restaurent.class';
+import { Restaurent, MongoRestaurent } from './classes/restaurent.class';
 @Injectable()
 export class RestaurentsService {
   constructor(
@@ -35,10 +35,71 @@ export class RestaurentsService {
       throw new MongoException(error);
     }
   }
-  async findAll(): Promise<Restaurent[]> {
-    return await this.restaurentModel.find().exec();
+  async findAll(
+    restaurentFilterDto: CreateRestaurentDto | any
+  ): Promise<MongoRestaurent[]> {
+    let result = await this.restaurentModel.find(restaurentFilterDto).exec();
+
+    return <MongoRestaurent[]>result;
   }
-  async findById(id: String): Promise<Restaurent> {
+  async findById(id: String): Promise<MongoRestaurent> {
     return await this.restaurentModel.findById(id).exec();
   }
+  async search(name: String): Promise<MongoRestaurent[]> {
+    return await this.restaurentModel
+      .find({
+        name: {
+          $regex: name,
+          $options: 'i'
+        }
+      })
+      .exec();
+  }
+  async nearest(lat: number, lng: number): Promise<MongoRestaurent[]> {
+    return await this.restaurentModel
+      .find({
+        location: {
+          $near: {
+            $geometry: {
+              type: 'Point',
+              coordinates: [lng, lat]
+            }
+          }
+        }
+      })
+      .exec();
+  }
+  async countByCity(): Promise<ICityCount[]> {
+    return await this.restaurentModel
+      .aggregate([
+        {
+          $group: {
+            _id: '$cityId',
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $lookup: {
+            from: 'cities', // should be defined from CityModel.collection name
+            localField: '_id',
+            foreignField: '_id',
+            as: 'city'
+          }
+        },
+        {
+          $unwind: '$city'
+        },
+        {
+          $project: {
+            name: '$city.name',
+            count: 1
+          }
+        }
+      ])
+      .exec();
+  }
+}
+export interface ICityCount {
+  city: string;
+  count: number;
 }

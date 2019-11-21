@@ -20,5 +20,5 @@ export class CreateRestaurentDto {
   @IsEmail()
   readonly email: string;
   @ApiModelProperty()
-  public location: LocationPoint;
+  readonly location: LocationPoint;
 }

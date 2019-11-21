@@ -17,8 +17,7 @@ import { CitiesService } from './cities.service';
 import { CreateCityDto } from './dto/create-city.dto';
 import { ICity } from './interfaces/city.interface';
 import { City } from './classes/city.class';
-import {RoleType} from '../common/constants/role-type'
-
+import { RoleType } from '../common/constants/role-type';
 
 import {
   ApiBearerAuth,
@@ -27,13 +26,10 @@ import {
   ApiUseTags
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { QueryFailedFilter } from 'src/common/filters/query-failed.filter';
-
-
+import { QueryFailedFilter } from '../common/filters/query-failed.filter';
 
 @ApiUseTags('cities')
 @Controller('cities')
-@UseGuards(RolesGuard)
 @UseInterceptors(LoggingInterceptor, TransformInterceptor)
 export class CitiesController {
   constructor(private readonly citiesService: CitiesService) {}
@@ -41,6 +37,7 @@ export class CitiesController {
   // @UseFilters(QueryFailedFilter)
   @ApiBearerAuth()
   @UseFilters(QueryFailedFilter)
+  @UseGuards(RolesGuard)
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @Roles(RoleType.ADMIN)

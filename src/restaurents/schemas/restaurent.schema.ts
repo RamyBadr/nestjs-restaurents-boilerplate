@@ -24,7 +24,8 @@ const Schema = new mongoose.Schema({
       required: true
     }
   }
+  // test: String
 });
-Schema.index({ location: 1 }, { '2dsphere': true });
+Schema.index({ location: '2dsphere' });
 Schema.index({ location: 1 }, { required: true });
 export const RestaurentSchema = Schema;
